@@ -56,7 +56,7 @@ public class Painting : MonoBehaviour
         colours[index + 3] = c.a;
     }
 
-    void Paint(int row, int col, int r, Color c)
+    void DotWrite(int row, int col, int r, Color c)
     {
         for(int grid_y = row-r; grid_y < row+r; grid_y++)
         {
@@ -76,6 +76,24 @@ public class Painting : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void Paint(Vector3 point, float r, Color c)
+    {
+        Vector3 origin = GetComponent<Collider>().bounds.min;
+        Vector3 extent = GetComponent<Collider>().bounds.max;
+        Vector3 span = extent - origin;
+
+        float ppu = width / span.x;
+        int pixel_r = Mathf.CeilToInt(r * ppu);
+        
+        float x_dist = 1 - (point.x - origin.x) / span.x;
+        float y_dist = 1 - (point.y - origin.y) / span.y;
+
+        int row = (int)(y_dist * height);
+        int col = (int)(x_dist * width);
+
+        DotWrite(row, col, pixel_r, c);
     }
 
     // Start is called before the first frame update
@@ -121,31 +139,6 @@ public class Painting : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Vector3 centroid = Vector3.zero;
-        for(int i = 0; i < collision.contactCount; i++)
-        {
-            centroid += collision.GetContact(i).point;
-        }
-        centroid /= collision.contactCount;
-
-        Vector3 origin = GetComponent<Collider>().bounds.min;
-        Vector3 extent = GetComponent<Collider>().bounds.max;
-        Vector3 point = GetComponent<Collider>().ClosestPointOnBounds(centroid);
-        float x_dist = 1 - (point.x - origin.x) / (extent.x - origin.x);
-        float y_dist = 1 - (point.y - origin.y) / (extent.y - origin.y);
-        int row = (int)(y_dist * height);
-        int col = (int)(x_dist * width);
-
-        print($"{x_dist}, {y_dist}");
-        print($"{col}, {row}");
-        Paint(row, col, 6, Color.red);
-
         Destroy(collision.collider.gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        colour_buffer.Release();
-        colour_buffer = null;
     }
 }

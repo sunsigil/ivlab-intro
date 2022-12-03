@@ -5,31 +5,26 @@ using UnityEngine;
 public class PaintGun : MonoBehaviour
 {
     [SerializeField]
-    Transform anchor;
+    Color colour;
+    [SerializeField]
+    float radius;
 
     [SerializeField]
-    GameObject paint_ball;
-
-    Timeline fire_timeline;
-
-    private void Awake()
-    {
-        fire_timeline = new Timeline(0.1f);
-    }
+    Transform anchor;
 
     public void Fire()
     {
-        if(fire_timeline.finished)
-        {
-            GameObject instance = Instantiate(paint_ball);
-            instance.transform.position = anchor.position;
-            instance.GetComponent<Rigidbody>().velocity = Camera.main.transform.forward * 10;
-            fire_timeline.Reset();
-        }
-    }
+        RaycastHit hit;
+        Ray ray = new Ray(anchor.position, Camera.main.transform.forward);
+        Physics.SphereCast(ray, radius, out hit);
 
-    private void FixedUpdate()
-    {
-        fire_timeline.Tick(Time.fixedDeltaTime);
+        if(hit.transform == null)
+        { return; }
+
+        Painting painting = hit.transform.GetComponent<Painting>();
+        if (painting == null)
+        { return; }
+
+        painting.Paint(hit.point, radius, colour);
     }
 }
