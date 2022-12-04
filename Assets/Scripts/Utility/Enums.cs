@@ -43,3 +43,10 @@ public enum UsableState
     BLOCKED,
     ACTIVE
 }
+
+public enum PaintMode
+{
+    NONE,
+    ADD,
+    ERASE
+}

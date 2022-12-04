@@ -3,6 +3,7 @@ Shader "Unlit/Targeter"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Colour("Colour", Color) = (1, 1, 1, 1)
     }
     SubShader
     {
@@ -35,6 +36,7 @@ Shader "Unlit/Targeter"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _Colour;
 
             v2f vert (appdata v)
             {
@@ -45,10 +47,10 @@ Shader "Unlit/Targeter"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag(v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = _Colour;
                 float R = 1 - step(0.5, length(i.uv - 0.5));
                 float r = step(0.4, length(i.uv - 0.5));
                 col.a = R * r;

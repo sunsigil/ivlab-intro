@@ -14,8 +14,8 @@ public class Painting : MonoBehaviour
 
     [SerializeField]
     ComputeShader shader;
-    float[] colours;
     ComputeBuffer colour_buffer;
+    float[] colour_array;
     RenderTexture texture;
     Material material;
 
@@ -33,46 +33,44 @@ public class Painting : MonoBehaviour
             {
                 int index = (y * width + x) * 4;
 
-                colours[index + 0] = c.r;
-                colours[index + 1] = c.g;
-                colours[index + 2] = c.b;
-                colours[index + 3] = c.a;
+                colour_array[index + 0] = c.r;
+                colour_array[index + 1] = c.g;
+                colour_array[index + 2] = c.b;
+                colour_array[index + 3] = c.a;
             }
         }
-
-        colour_buffer.SetData(colours);
     }
 
-    void Write(int row, int col, Color c)
+    void Write(int x, int y, Color c)
     {
-        if(row < 0 || row >= height || col < 0 || col >= width)
+        if(y < 0 || y >= height || x < 0 || x >= width)
         { return;  }
 
-        int index = (row * width + col) * 4;
+        int index = (y * width + x) * 4;
 
-        colours[index + 0] = c.r;
-        colours[index + 1] = c.g;
-        colours[index + 2] = c.b;
-        colours[index + 3] = c.a;
+        colour_array[index + 0] = c.r;
+        colour_array[index + 1] = c.g;
+        colour_array[index + 2] = c.b;
+        colour_array[index + 3] = c.a;
     }
 
-    void DotWrite(int row, int col, int r, Color c)
+    void DotWrite(int x, int y, int r, Color c)
     {
-        for(int grid_y = row-r; grid_y < row+r; grid_y++)
+        for(int box_y = y-r; box_y < y+r; box_y++)
         {
-            if(grid_y < 0 || grid_y >= height)
+            if(box_y < 0 || box_y >= height)
             { continue; }
 
-            for(int grid_x = col-r; grid_x < col+r; grid_x++)
+            for(int box_x = x-r; box_x < x+r; box_x++)
             {
-                if(grid_x < 0 || grid_x >= width)
+                if(box_x < 0 || box_x >= width)
                 { continue; }
 
-                Vector2Int grid_dist = new Vector2Int(grid_x - col, grid_y - row);
+                Vector2Int box_dist = new Vector2Int(box_x - x, box_y - y);
 
-                if(grid_dist.magnitude <= r)
+                if(box_dist.magnitude <= r)
                 {
-                    Write(grid_y, grid_x, c);
+                    Write(box_x, box_y, c);
                 }
             }
         }
@@ -93,17 +91,24 @@ public class Painting : MonoBehaviour
         int row = (int)(y_dist * height);
         int col = (int)(x_dist * width);
 
-        DotWrite(row, col, pixel_r, c);
+        DotWrite(col, row, pixel_r, c);
+    }
+
+    public void Erase(Vector3 point, float r)
+    {
+        Paint(point, r, background);
     }
 
     // Start is called before the first frame update
     void Awake()
     {
+        shader = (ComputeShader)Instantiate(Resources.Load("PaintCompute"));
+
         aspect = width / height;
         transform.localScale = new Vector3(transform.localScale.x * aspect, transform.localScale.y, transform.localScale.z);
 
-        colours = new float[width * height * 4];
         colour_buffer = new ComputeBuffer(width * height, sizeof(float) * 4);
+        colour_array = new float[width * height * 4];
 
         texture = new RenderTexture(width, height, 32);
         texture.enableRandomWrite = true;
@@ -118,27 +123,23 @@ public class Painting : MonoBehaviour
         colour_buffer_id = Shader.PropertyToID("_ColourBuffer");
         width_id = Shader.PropertyToID("_Width");
         height_id = Shader.PropertyToID("_Height");
-    }
-
-    private void Start()
-    {
-        Clear(background);
-    }
-
-    void Update()
-    {
-        colour_buffer.SetData(colours);
 
         shader.SetTexture(kernel_id, texture_id, texture);
         shader.SetBuffer(kernel_id, colour_buffer_id, colour_buffer);
         shader.SetInt(width_id, width);
         shader.SetInt(height_id, height);
-        
+
+        Clear(background);
+    }
+
+    void Update()
+    {
+        colour_buffer.SetData(colour_array);
         shader.Dispatch(kernel_id, Mathf.CeilToInt(width / 8f), Mathf.CeilToInt(height / 8f), 1);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnDestroy()
     {
-        Destroy(collision.collider.gameObject);
+        colour_buffer.Dispose();
     }
 }
