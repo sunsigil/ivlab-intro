@@ -7,6 +7,7 @@ public class PaintGun : MonoBehaviour
     [SerializeField]
     Color colour;
     [SerializeField]
+    float[] radii;
     float radius;
 
     [SerializeField]
@@ -20,9 +21,19 @@ public class PaintGun : MonoBehaviour
     Vector3 target_point;
     PaintMode mode;
 
+    public void SetRadius(int setting)
+    {
+        radius = radii[setting % radii.Length];
+    }
+
     public void Fire(PaintMode mode)
     {
         this.mode = mode;
+    }
+
+    private void Awake()
+    {
+        SetRadius(0);
     }
 
     private void Update()
@@ -31,7 +42,7 @@ public class PaintGun : MonoBehaviour
         {
             mark.gameObject.SetActive(true);
             mark.transform.position = Vector3.Lerp(anchor.position, target_point, 0.95f);
-            mark.transform.LookAt(Camera.main.transform.position, Vector3.up);
+            mark.transform.forward = target.transform.up;
             mark.transform.localScale = new Vector3(radius * 3f, radius * 3f, 1);
 
             if (mode != PaintMode.NONE)
@@ -58,6 +69,7 @@ public class PaintGun : MonoBehaviour
         }
         else
         {
+            line.gameObject.SetActive(false);
             mark.gameObject.SetActive(false);
         }
     }

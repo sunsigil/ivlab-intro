@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class User : MonoBehaviour
 {
+	[SerializeField]
+	PaintGunMenu menu_prefab;
+
     Controller controller;
 	Animator animator;
 	Looker looker;
 	Runner runner;
 	PaintGun gun;
+
+	PaintGunMenu menu;
 
 	void Awake()
     {
@@ -17,6 +22,9 @@ public class User : MonoBehaviour
 		looker = GetComponent<Looker>();
 		runner = GetComponent<Runner>();
 		gun = GetComponentInChildren<PaintGun>();
+
+		menu = Instantiate(menu_prefab);
+		menu.gameObject.SetActive(false);
 	}
 
     // Update is called once per frame
@@ -49,5 +57,10 @@ public class User : MonoBehaviour
 			gun.Fire(PaintMode.NONE);
 			// animator.SetBool("Firing", false);
 		}
+
+		if(Input.GetKeyDown(KeyCode.Mouse2))
+        {
+			menu.gameObject.SetActive(true);
+        }
     }
 }

@@ -210,7 +210,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colour: {r: 0, g: 0, b: 0, a: 1}
-  radius: 0.025
+  radii:
+  - 0.025
+  - 0.05
+  - 0.1
+  - 0.125
+  - 0.15
+  - 0.2
   anchor: {fileID: 4577151369094432112}
   line: {fileID: 7768771285196504485}
   mark: {fileID: 8748979673737971877}
