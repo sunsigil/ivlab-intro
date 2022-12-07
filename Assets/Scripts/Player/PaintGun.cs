@@ -7,7 +7,6 @@ public class PaintGun : MonoBehaviour
     [SerializeField]
     Color colour;
     [SerializeField]
-    float[] radii;
     float radius;
 
     [SerializeField]
@@ -21,12 +20,17 @@ public class PaintGun : MonoBehaviour
     Vector3 target_point;
     PaintMode mode;
 
-    public void SetRadius(int setting)
+    public void SetColour(Color colour)
     {
-        radius = radii[setting % radii.Length];
+        this.colour = colour;
     }
 
-    public void Fire(PaintMode mode)
+    public void SetRadius(float radius)
+    {
+        this.radius = radius;
+    }
+
+    public void SetMode(PaintMode mode)
     {
         this.mode = mode;
     }

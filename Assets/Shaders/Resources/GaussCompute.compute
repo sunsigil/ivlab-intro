@@ -1,0 +1,53 @@
+#pragma enable_d3d11_debug_symbols
+#pragma kernel CSMain
+
+RWTexture2D<float4> _InTex;
+int _Width;
+int _Height;
+RWTexture2D<float4> _OutTex;
+
+float luminance(float4 c)
+{
+    return 0.2162 * c.r + 0.7152 * c.g + 0.0722 * c.b;
+}
+
+float4 window_mean(int2 tl, int2 br)
+{
+    float4 c_sum = float4(0, 0, 0, 0);
+    int samples = 0;
+
+    for (int y = min(tl.y, br.y); y < max(tl.y, br.y); y++)
+    {
+        if (y < 0 || y >= _Height)
+        {
+            continue;
+        }
+
+        for (int x = min(tl.x, br.x); x < max(tl.x, br.x); x++)
+        {
+            if (x < 0 || x >= _Width)
+            {
+                continue;
+            }
+
+            c_sum += _InTex[int2(x, y)];
+            samples++;
+        }
+    }
+
+    return c_sum / samples;
+}
+
+float4 gauss_filter(uint3 id, int a)
+{
+    int2 tl = id.xy - int2(a, a);
+    int2 br = id.xy + int2(a, a);
+
+    return window_mean(tl, br);
+}
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    _OutTex[id.xy] = gauss_filter(id, 6);
+}

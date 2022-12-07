@@ -5,7 +5,7 @@ using UnityEngine;
 public class RadialLayout : MonoBehaviour
 {
     [SerializeField]
-    int width;
+    float width;
     [SerializeField]
     int n;
 
@@ -18,14 +18,15 @@ public class RadialLayout : MonoBehaviour
     float s; // Side length of regular polygon connecting all items
     float a; // Radius of said regular polygon
 
-    RectTransform[] items;
+    RectTransform[] _items;
+    public RectTransform[] items => _items;
 
     public RectTransform Select(Vector2 position)
     {
         float min_dist = Mathf.Infinity;
         RectTransform near_item = null;
 
-        foreach(RectTransform item in items)
+        foreach(RectTransform item in _items)
         {
             Vector2 line = position - item.anchoredPosition;
             float dist = line.magnitude;
@@ -47,7 +48,7 @@ public class RadialLayout : MonoBehaviour
 
         for(int i = 0; i < n; i++)
         {
-            Vector2 line = position - items[i].anchoredPosition;
+            Vector2 line = position - _items[i].anchoredPosition;
             float dist = line.magnitude;
 
             if (dist < min_dist)
@@ -85,13 +86,13 @@ public class RadialLayout : MonoBehaviour
         float arc = 2 * Mathf.PI / n;
         float phase = Mathf.PI / 2 - arc;
 
-        items = new RectTransform[n];
+        _items = new RectTransform[n];
         int count = 0;
 
         for (float t = phase; count < n; t += arc)
         {
             RectTransform item = Instantiate(item_prefab, transform);
-            items[count] = item;
+            _items[count] = item;
             count++;
 
             float span = 2 * Mathf.Sqrt(r * r * 0.5f);

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3939910800139310806}
   - component: {fileID: 391479400888853684}
   - component: {fileID: 90516589625380142}
+  - component: {fileID: 2326095477651798130}
   m_Layer: 5
   m_Name: Paint Gun Menu
   m_TagString: Untagged
@@ -116,6 +117,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3640a1c335046d41817a01dbb03d9f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radii:
+  - 0.05
+  - 0.075
+  - 0.1
+  - 0.125
+  - 0.15
+  - 0.5
 --- !u!114 &391479400888853684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 300
   n: 6
-  item_prefab: {fileID: 5504588974045495915, guid: 5e15abb0e1801c34e9fe0305b46eea22, type: 3}
+  item_prefab: {fileID: 5504588974045495915, guid: 7ac01b139d53d7c4e960da51662e1259, type: 3}
 --- !u!114 &90516589625380142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +153,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unmanaged: 0
   _control_layer: 1
+--- !u!114 &2326095477651798130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2772081115883682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d234fa2196a394fb1d2648df6a0e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 9e52e1b30c65ffc468a0b617bd887eb8, type: 2}
+  in_tex: {fileID: 8400000, guid: 2fc5503ed1fed0e4280e6156111131bb, type: 2}
+  shader: {fileID: 7200000, guid: 1aa5c9d9edd6eba4b8c2685953e134bd, type: 3}
 --- !u!1 &4548795370380074498
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,15 +226,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Material: {fileID: 2100000, guid: 9e52e1b30c65ffc468a0b617bd887eb8, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PaintGunMenu : MonoBehaviour
 {
+    [SerializeField]
+    float[] radii;
+
     Controller controller;
     RadialLayout layout;
     PaintGun gun;
@@ -21,11 +24,19 @@ public class PaintGunMenu : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
+        for(int i = 0; i < layout.items.Length; i++)
+        {
+            RectTransform item = layout.items[i];
+            SizeDot dot = item.GetComponent<SizeDot>();
+            dot.SetRadius(radii[i]);
+        }
+
         Vector2 m_pos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         Vector2 s_cen = new Vector2(Screen.width, Screen.height) * 0.5f;
         Vector2 m_diff = m_pos - s_cen;
 
-        gun.SetRadius(layout.SelectIndex(m_diff));
+        int rad_index = layout.SelectIndex(m_diff) % radii.Length;
+        gun.SetRadius(radii[rad_index]);
 
         if(Input.GetKeyUp(KeyCode.Mouse2))
         {

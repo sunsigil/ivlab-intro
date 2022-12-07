@@ -43,18 +43,18 @@ public class User : MonoBehaviour
 
 		if (controller.Held(InputCode.RHAND))
 		{
-			gun.Fire(PaintMode.ADD);
+			gun.SetMode(PaintMode.ADD);
 			// animator.SetBool("Firing", true);
 		}
 		else if (controller.Held(InputCode.LHAND))
 		{
-			gun.Fire(PaintMode.ERASE);
+			gun.SetMode(PaintMode.ERASE);
 			// animator.SetBool("Firing", true);
 
 		}
 		else if (controller.Released(InputCode.LHAND) || controller.Released(InputCode.RHAND))
 		{
-			gun.Fire(PaintMode.NONE);
+			gun.SetMode(PaintMode.NONE);
 			// animator.SetBool("Firing", false);
 		}
 
