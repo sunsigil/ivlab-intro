@@ -5,7 +5,9 @@ using UnityEngine;
 public class PaintGun : MonoBehaviour
 {
     [SerializeField]
-    Color colour;
+    Color[] colours;
+    int colour_idx;
+    Color colour => colours[colour_idx];
     [SerializeField]
     float radius;
 
@@ -20,9 +22,11 @@ public class PaintGun : MonoBehaviour
     Vector3 target_point;
     PaintMode mode;
 
-    public void SetColour(Color colour)
+    public void ShiftColour(int offset)
     {
-        this.colour = colour;
+        if(offset == -1)
+        { offset = colours.Length + offset; }
+        colour_idx = (colour_idx + offset) % colours.Length;
     }
 
     public void SetRadius(float radius)

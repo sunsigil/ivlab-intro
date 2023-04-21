@@ -22,7 +22,7 @@
 	<right>
 		d
 	</right>
-	
+
 	<jump>
 		space
 	</jump>
@@ -35,13 +35,9 @@
 		mouse1
 	</lhand>
 
-	<journal>
-		tab
-	</journal>
-
-	<inventory>
-		i
-	</inventory>
+	<power>
+		mouse2
+	</power>
 
 	<switch_left>
 		q
@@ -50,16 +46,4 @@
 	<switch_right>
 		e
 	</switch_right>
-
-	<console>
-		backquote
-	</console>
-
-	<scroll_up>
-		uparrow
-	</scroll_up>
-
-	<scroll_down>
-		downarrow
-	</scroll_down>
 </scheme>

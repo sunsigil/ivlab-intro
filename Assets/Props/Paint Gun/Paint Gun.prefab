@@ -209,14 +209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45fbe58d903a874aa78078389e8599d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colour: {r: 0, g: 0, b: 0, a: 1}
-  radii:
-  - 0.025
-  - 0.05
-  - 0.1
-  - 0.125
-  - 0.15
-  - 0.2
+  colours:
+  - {r: 0.7264151, g: 0.15419191, b: 0.15419191, a: 1}
+  - {r: 0.26185784, g: 0.5283019, b: 0, a: 1}
+  - {r: 0.2323958, g: 0.13955145, b: 0.6037736, a: 1}
+  radius: 0
   anchor: {fileID: 4577151369094432112}
   line: {fileID: 7768771285196504485}
   mark: {fileID: 8748979673737971877}

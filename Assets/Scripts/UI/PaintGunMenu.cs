@@ -47,7 +47,7 @@ public class PaintGunMenu : MonoBehaviour
         gun.SetRadius(dot.radius);
         last_selected = dot;
 
-        if(Input.GetKeyUp(KeyCode.Mouse2))
+        if(controller.Released(InputCode.POWER))
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;

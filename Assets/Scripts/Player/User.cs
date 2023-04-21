@@ -5,26 +5,24 @@ using UnityEngine;
 public class User : MonoBehaviour
 {
 	[SerializeField]
-	PaintGunMenu menu_prefab;
+	MainMenu main_menu_prefab;
+	[SerializeField]
+	PaintGunMenu gun_menu_prefab;
 
     Controller controller;
-	Animator animator;
-	Looker looker;
-	Runner runner;
 	PaintGun gun;
 
-	PaintGunMenu menu;
+	MainMenu main_menu;
+	PaintGunMenu gun_menu;
 
 	void Awake()
     {
         controller = GetComponent<Controller>();
-		animator = GetComponentInChildren<Animator>();
-		looker = GetComponent<Looker>();
-		runner = GetComponent<Runner>();
 		gun = GetComponentInChildren<PaintGun>();
 
-		menu = Instantiate(menu_prefab);
-		menu.gameObject.SetActive(false);
+		main_menu = Instantiate(main_menu_prefab);
+		gun_menu = Instantiate(gun_menu_prefab);
+		gun_menu.gameObject.SetActive(false);
 	}
 
     // Update is called once per frame
@@ -32,35 +30,33 @@ public class User : MonoBehaviour
     {
 		if(controller.Pressed(InputCode.SWITCH_LEFT))
 		{
-			print("Switching Colours");
-			// animator.SetTrigger("Switched");
+			gun.ShiftColour(-1);
 		}
 		if (controller.Pressed(InputCode.SWITCH_RIGHT))
 		{
-			print("Switching Colours");
-			// animator.SetTrigger("Switched");
+			gun.ShiftColour(1);
 		}
 
 		if (controller.Held(InputCode.RHAND))
 		{
 			gun.SetMode(PaintMode.ADD);
-			// animator.SetBool("Firing", true);
 		}
 		else if (controller.Held(InputCode.LHAND))
 		{
 			gun.SetMode(PaintMode.ERASE);
-			// animator.SetBool("Firing", true);
-
 		}
-		else if (controller.Released(InputCode.LHAND) || controller.Released(InputCode.RHAND))
+		else // if (controller.Released(InputCode.LHAND) || controller.Released(InputCode.RHAND))
 		{
 			gun.SetMode(PaintMode.NONE);
-			// animator.SetBool("Firing", false);
 		}
 
-		if(Input.GetKeyDown(KeyCode.Mouse2))
-        {
-			menu.gameObject.SetActive(true);
-        }
+		if(controller.Pressed(InputCode.CANCEL))
+		{
+			main_menu.gameObject.SetActive(true);
+		}
+		else if (controller.Held(InputCode.POWER))
+		{
+			gun_menu.gameObject.SetActive(true);
+		}
     }
 }

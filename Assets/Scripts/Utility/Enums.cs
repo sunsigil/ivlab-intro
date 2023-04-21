@@ -17,16 +17,12 @@ public enum InputCode
     DOWN,
     LEFT,
     RIGHT,
-	JUMP,
+    JUMP,
 	RHAND,
 	LHAND,
-    JOURNAL,
-    INVENTORY,
+    POWER,
     SWITCH_LEFT,
-    SWITCH_RIGHT,
-    CONSOLE,
-    SCROLL_UP,
-    SCROLL_DOWN
+    SWITCH_RIGHT
 }
 
 public enum StateSignal
